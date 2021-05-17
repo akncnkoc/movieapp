@@ -1,20 +1,27 @@
-import { Route } from "react-router-dom";
-import { Router } from "react-router";
+import { createBrowserHistory } from "history";
 
+import { Router, Route, Switch } from "react-router-dom";
+import Header from "./Header";
 import About from "./About";
 import Movie from "./Movie";
-import PopularMovies from "./PopularMovies";
-import createHistory from "history/createBrowserHistory";
+import Home from "./Home";
 
 function Content() {
-  const history = createHistory();
-
+  const historyInstance = createBrowserHistory();
   return (
     <div className="content">
-      <Router history={history}>
-        <Route exact path="/" component={PopularMovies} />
-        <Route path="/movie" component={Movie} />
-        <Route path="/about" component={About} />
+      <Router history={historyInstance}>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route
+            path="/movie/:id"
+            render={(props) => {
+              return <Movie id={props.match.params.id} />;
+            }}
+          />
+          <Route path="/about" component={About} />
+        </Switch>
       </Router>
     </div>
   );
